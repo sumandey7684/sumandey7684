@@ -1,60 +1,85 @@
-<h1 align="center">✨ Suman Dey ✨</h1>
-<p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=500&size=22&pause=1000&color=00FF99&center=true&vCenter=true&width=460&lines=Full-Stack+Developer;React+%7C+Next.js+%7C+Node.js;Clean.+Scalable.+User-friendly." alt="Typing SVG" />
-</p>
+```text
+# SUMAN DEY <3
+==============
 
-<p align="center">
-  <b>Crafting future-ready web experiences with modern tools & clean code.</b>
-</p>
+Building AI-powered applications, full-stack products, and modern web experiences.
+Passionate about solving real-world problems through clean code, thoughtful design, and Generative AI.
 
-<p align="center">
-  <a href="https://sumandey.in/"><img src="https://img.shields.io/badge/🌐 Portfolio-000?style=for-the-badge&logo=firefox&logoColor=white" /></a>
-  <a href="https://www.linkedin.com/in/sumandey7684/"><img src="https://img.shields.io/badge/💼 LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
-  <a href="https://x.com/sumxnnn"><img src="https://img.shields.io/badge/🕊️ Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" /></a>
-</p>
+---------------
+Connect With Me
 
----
+» GitHub        → https://github.com/sumandey7684
+» Portfolio     → https://sumandey.in/
+» LinkedIn      → https://linkedin.com/in/sumandey7684
+» Email         → sumandey7684@gmail.com
 
-## 🙋‍♂️ About Me
+--------------
+Currently
 
-Hey! I'm **Suman** — a passionate developer who enjoys solving meaningful problems through code.  
-From building sleek interfaces to designing resilient APIs, I love the entire process of turning ideas into impactful digital products.
+» Building AI-powered developer tools and productivity apps
+» Exploring AI Agents, RAG, LangChain, and LLM Engineering
+» Learning scalable backend architecture and system design
+» Open to internships and exciting collaborations
 
-🧠 Focused on: **Performance**, **Clean Code**, and **Scalability**  
-🌱 Currently exploring: **System Design** & **Web3**  
-🤝 Open to exciting collaborations!
+--------------
+Skills & Tools
 
-> *"Just an ordinary person trying to be useful for humanity."*
+» Languages:    JavaScript, TypeScript, Python, Java, C
+» Frontend:     React, Next.js, HTML5, CSS3, Tailwind CSS, SCSS, Bootstrap
+» Backend:      Node.js, Express.js, FastAPI, REST APIs
+» AI / ML:      OpenAI, Gemini, LangChain, Hugging Face, RAG, Vector Databases
+» Databases:    MongoDB, Astra DB, SQL, PostgreSql
+» Tools:        Git, GitHub, Vercel, Netlify, Figma, Adobe XD, VS Code
 
----
+-----------------
+Featured Projects
 
-## 🚀 Tech Toolbox
+● AstraDB
+  ✦ High-performance vector database engine built from scratch in C++17,
+    implementing HNSW, KD-Tree, and brute-force ANN search for efficient
+    similarity search across high-dimensional embeddings.
+  ✦ Features: Full RAG pipeline • REST API • Embedding ingestion • PCA
+    visualization • Context-aware retrieval • Semantic vector search
+  ✦ Tech: C++17 • HNSW • KD-Tree • ANN • RAG • REST API • PCA
 
-### 🧠 Languages  
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000&style=flat-square)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff&style=flat-square)
-![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff&style=flat-square)
+● Podcast Buddy
+  ✦ AI-powered podcast generation platform that transforms news articles
+    into natural, conversational podcast episodes.
+  ✦ Automatically summarizes news, generates multi-speaker scripts,
+    and produces realistic AI voice narration.
+  ✦ Built using Next.js, FastAPI, Gemini, Edge TTS, and FFmpeg for an
+    end-to-end AI content generation pipeline.
 
-### 🎨 Frontend  
-![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000&style=flat-square)
-![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=fff&style=flat-square)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-38B2AC?logo=tailwind-css&logoColor=fff&style=flat-square)
+● GyaanSaar AI
+  ✦ AI-powered article summarizer that converts lengthy content into
+    concise, easy-to-read summaries.
+  ✦ Supports intelligent text processing with fast response times and
+    a clean, responsive user interface.
+  ✦ Built with modern web technologies and LLM-powered summarization
+    to improve reading productivity.
 
-### 🔧 Backend  
-![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=fff&style=flat-square)
-![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=fff&style=flat-square)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=fff&style=flat-square)
+● Tarang
+  ✦ Modern mesh gradient generator for designers and frontend developers.
+  ✦ Create beautiful, customizable gradient backgrounds instantly with
+    a smooth, intuitive interface.
+  ✦ Designed to speed up UI design workflows while generating
+    production-ready visual assets.
 
-### 🛠 Tools  
-![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=fff&style=flat-square)
-![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=fff&style=flat-square)
-![AWS](https://img.shields.io/badge/AWS-232F3E?logo=amazon-aws&logoColor=fff&style=flat-square)
+----------------
+Highlights
 
----
-## 🌐 Socials:
-[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/sumxnnn_911) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/sumandey7684) [![X](https://img.shields.io/badge/X-black.svg?logo=X&logoColor=white)](https://x.com/sumxnnn) [![email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](mailto:sumandey05@icloud.com)
+» AI & Full-Stack Developer
+» Experience building RAG pipelines with Vector Databases
+» Built multiple production-ready AI and web applications
+» Passionate about Open Source and developer experience
+» Strong focus on clean architecture, UI/UX, and scalable applications
+» Always learning, always building
 
----
-### ✍️ Random Dev Quote
-![](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical)
+--------------------------
+Thanks for stopping by! :)
 
+Whether it's AI, full-stack development, open source, or building something ambitious,
+I'm always excited to collaborate and learn from great people.
+
+Let's build something awesome together <3
+```
