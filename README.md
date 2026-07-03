@@ -35,35 +35,24 @@ Skills & Tools
 Featured Projects
 
 ● AstraDB
-  ✦ High-performance vector database engine built from scratch in C++17,
-    implementing HNSW, KD-Tree, and brute-force ANN search for efficient
-    similarity search across high-dimensional embeddings.
-  ✦ Features: Full RAG pipeline • REST API • Embedding ingestion • PCA
-    visualization • Context-aware retrieval • Semantic vector search
+  ✦ High-performance vector database engine built from scratch in C++17, implementing HNSW, KD-Tree, and brute-force ANN search for efficient similarity search across high dimensional embeddings.
+  ✦ Features: Full RAG pipeline • REST API • Embedding ingestion • PCA visualization • Context-aware retrieval • Semantic vector search
   ✦ Tech: C++17 • HNSW • KD-Tree • ANN • RAG • REST API • PCA
 
 ● Podcast Buddy
-  ✦ AI-powered podcast generation platform that transforms news articles
-    into natural, conversational podcast episodes.
-  ✦ Automatically summarizes news, generates multi-speaker scripts,
-    and produces realistic AI voice narration.
-  ✦ Built using Next.js, FastAPI, Gemini, Edge TTS, and FFmpeg for an
-    end-to-end AI content generation pipeline.
+  ✦ AI-powered podcast generation platform that transforms news articles into natural, conversational podcast episodes.
+  ✦ Automatically summarizes news, generates multi-speaker scripts, and produces realistic AI voice narration.
+  ✦ Built using Next.js, FastAPI, Gemini, Edge TTS, and FFmpeg for an end-to-end AI content generation pipeline.
 
 ● GyaanSaar AI
-  ✦ AI-powered article summarizer that converts lengthy content into
-    concise, easy-to-read summaries.
-  ✦ Supports intelligent text processing with fast response times and
-    a clean, responsive user interface.
-  ✦ Built with modern web technologies and LLM-powered summarization
-    to improve reading productivity.
+  ✦ AI-powered article summarizer that converts lengthy content into concise, easy-to-read summaries.
+  ✦ Supports intelligent text processing with fast response times and a clean, responsive user interface.
+  ✦ Built with modern web technologies and LLM-powered summarization to improve reading productivity.
 
 ● Tarang
   ✦ Modern mesh gradient generator for designers and frontend developers.
-  ✦ Create beautiful, customizable gradient backgrounds instantly with
-    a smooth, intuitive interface.
-  ✦ Designed to speed up UI design workflows while generating
-    production-ready visual assets.
+  ✦ Create beautiful, customizable gradient backgrounds instantly with a smooth, intuitive interface.
+  ✦ Designed to speed up UI design workflows while generating production-ready visual assets.
 
 ----------------
 Highlights
