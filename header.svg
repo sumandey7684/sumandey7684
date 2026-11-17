@@ -1,0 +1,30 @@
+<svg width="820" height="220" viewBox="0 0 820 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Suman Dey — Full-Stack Developer and Generative AI Engineer</title>
+  <desc id="desc">A terminal-inspired profile header with developer information for Suman Dey.</desc>
+  <rect x="1" y="1" width="818" height="218" rx="14" fill="#0D1117" stroke="#30363D" stroke-width="2"/>
+  <path d="M1 42H819" stroke="#30363D"/>
+  <circle cx="24" cy="22" r="6" fill="#FF5F56"/>
+  <circle cx="44" cy="22" r="6" fill="#FFBD2E"/>
+  <circle cx="64" cy="22" r="6" fill="#27C93F"/>
+  <text x="410" y="27" text-anchor="middle" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">@sumandey7684 — zsh</text>
+
+  <text x="30" y="75" fill="#39D353" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="25" font-weight="700">Suman Dey</text>
+  <text x="30" y="101" fill="#58A6FF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">Full-Stack Developer | Generative AI Engineer</text>
+  <path d="M30 116H790" stroke="#21262D"/>
+
+  <text x="30" y="139" fill="#39D353" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">user</text>
+  <text x="100" y="139" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">sumandey7684</text>
+  <text x="290" y="139" fill="#39D353" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">role</text>
+  <text x="350" y="139" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">Developer</text>
+  <text x="530" y="139" fill="#39D353" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">education</text>
+  <text x="610" y="139" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">B.Tech CSE</text>
+
+  <text x="30" y="163" fill="#39D353" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">graduation</text>
+  <text x="110" y="163" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">2027</text>
+  <text x="290" y="163" fill="#39D353" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">location</text>
+  <text x="360" y="163" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">Bhubaneswar, India</text>
+
+  <text x="30" y="187" fill="#39D353" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">focus</text>
+  <text x="100" y="187" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">Software Engineering &amp; GenAI</text>
+  <text x="30" y="207" fill="#58A6FF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11">$ build practical systems_</text>
+</svg>

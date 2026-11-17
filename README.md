@@ -1,13 +1,100 @@
 <div align="center">
-<a href="https://github.com/sumandey7684"><img src="./cards/hero.svg" alt="Suman profile hero" width="100%"></a>
-<img src="./cards/heatmap.svg" alt="Suman contribution heatmap" width="100%">
-<img src="./cards/activity.svg" alt="Suman monthly activity chart" width="100%">
-<a href="https://github.com/sumandey7684"><img src="./cards/tile-build.svg" alt="Build profile tile" width="33.333%"></a><a href="https://github.com/sumandey7684"><img src="./cards/tile-brand.svg" alt="Brand profile tile" width="33.333%"></a><a href="https://github.com/sumandey7684"><img src="./cards/tile-learn.svg" alt="Learn profile tile" width="33.333%"></a>
-<picture>
-<source media="(prefers-color-scheme: dark)" srcset="./cards/title-dark.svg">
-<source media="(prefers-color-scheme: light)" srcset="./cards/title-light.svg">
-<img src="./cards/title-dark.svg" alt="What I'm building" width="100%">
-</picture>
-<a href="https://github.com/sumandey7684/Podcast-buddy"><img src="./cards/repo-podcast-buddy.svg" alt="Podcast-buddy repository card" width="100%"></a>
-<p><a href="https://github.com/sumandey7684">GitHub</a></p>
+  <a href="https://github.com/sumandey7684">
+    <img src="./profile.png" alt="Suman Dey — Full-Stack Developer and Generative AI Engineer" width="100%">
+  </a>
+</div>
+
+<hr>
+
+## If you're here, you're probably looking for my work
+
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <h3><a href="https://github.com/sumandey7684/AstraDB">AstraDB</a></h3>
+      <p>C++17 vector database and RAG engine built for fast semantic retrieval.</p>
+      <ul>
+        <li>HNSW, KD-Tree, and brute-force similarity search</li>
+        <li>REST API integration and PCA visualization</li>
+        <li>Ollama support for local embeddings and LLMs</li>
+      </ul>
+      <sub><b>C++17</b> · HNSW · KD-Tree · RAG · Ollama</sub>
+    </td>
+    <td width="33%" valign="top">
+      <h3><a href="https://github.com/sumandey7684/Deeptrace">DeepTrace</a></h3>
+      <p>Offline Deep Packet Inspection engine for PCAP analysis and protocol identification.</p>
+      <ul>
+        <li>Directional 5-tuple hash-based load balancing</li>
+        <li>Fast-path packet processing</li>
+        <li>HTTP, HTTPS/TLS, and DNS detection</li>
+        <li>FastAPI backend and React dashboard</li>
+      </ul>
+      <sub><b>C++</b> · FastAPI · React · Vite · Networking</sub>
+    </td>
+    <td width="33%" valign="top">
+      <h3><a href="https://github.com/sumandey7684/MeshPay">MeshPay</a></h3>
+      <p>Offline-first UPI payment simulation focused on secure peer-to-peer transactions.</p>
+      <ul>
+        <li>RSA-OAEP and AES-256-GCM encryption</li>
+        <li>SHA-256-based idempotency</li>
+        <li>Concurrent transactions and bridge synchronization</li>
+        <li>Optimistic locking</li>
+      </ul>
+      <sub><b>Java 17</b> · Spring Boot 3 · H2 · Cryptography</sub>
+    </td>
+  </tr>
+</table>
+
+<hr>
+
+## A little about me
+
+- Final-year B.Tech CSE student at Trident Academy of Technology, BPUT (2027).
+- Full-Stack Developer and Generative AI Engineer focused on building practical products.
+- AI/ML Intern at MindBrain Innovation, working on multi-agent systems, MCP, and RAG pipelines.
+- Experienced with React, Node.js, Python, Java, C++, and modern AI/LLM frameworks.
+- Interested in software engineering, backend systems, and Generative AI.
+
+> **700+ LeetCode problems solved. 1384 contest rating.**
+
+<hr>
+
+## GitHub
+
+<div align="center">
+  <img src="https://ghchart.rshah.org/sumandey7684" alt="GitHub contribution graph for sumandey7684" width="100%">
+</div>
+
+<div align="center">
+  <img src="./github%20stats.png" alt="Suman Dey's GitHub stats" width="49%">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=sumandey7684&theme=dark&hide_border=true" alt="GitHub streak stats" width="49%">
+</div>
+
+<div align="center">
+  <img src="./most%20used%20lang.png" alt="Most used programming languages" width="49%">
+</div>
+
+<div align="center">
+  <img src="./sumandey7684_wakatime.png" alt="WakaTime coding stats for the last 7 days" width="100%">
+</div>
+
+<div align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=sumandey7684&bg_color=0d1117&color=58a6ff&line=58a6ff&point=ffffff&area=true&hide_border=true" alt="GitHub activity graph" width="100%">
+</div>
+
+<hr>
+
+<div align="center">
+  <a href="https://www.linkedin.com/in/sumandey7684">
+    <img src="https://img.shields.io/badge/LinkedIn-0D1117?style=for-the-badge&logo=linkedin&logoColor=58A6FF" alt="LinkedIn">
+  </a>
+  <a href="https://github.com/sumandey7684">
+    <img src="https://img.shields.io/badge/GitHub-0D1117?style=for-the-badge&logo=github&logoColor=58A6FF" alt="GitHub">
+  </a>
+  <a href="https://www.sumandey.tech">
+    <img src="https://img.shields.io/badge/Portfolio-0D1117?style=for-the-badge&logo=googlechrome&logoColor=58A6FF" alt="Portfolio">
+  </a>
+  <a href="mailto:sumandey7684@gmail.com">
+    <img src="https://img.shields.io/badge/Email-0D1117?style=for-the-badge&logo=gmail&logoColor=58A6FF" alt="Email">
+  </a>
 </div>
