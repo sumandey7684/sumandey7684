@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/sumandey7684">
-    <img src="./profile.png" alt="Suman Dey — Full-Stack Developer and Generative AI Engineer" width="100%">
+    <img src="./header.svg" alt="Suman Dey — Full-Stack Developer and Generative AI Engineer" width="100%">
   </a>
 </div>
 
@@ -8,42 +8,37 @@
 
 ## If you're here, you're probably looking for my work
 
-<table>
-  <tr>
-    <td width="33%" valign="top">
-      <h3><a href="https://github.com/sumandey7684/AstraDB">AstraDB</a></h3>
-      <p>C++17 vector database and RAG engine built for fast semantic retrieval.</p>
-      <ul>
-        <li>HNSW, KD-Tree, and brute-force similarity search</li>
-        <li>REST API integration and PCA visualization</li>
-        <li>Ollama support for local embeddings and LLMs</li>
-      </ul>
-      <sub><b>C++17</b> · HNSW · KD-Tree · RAG · Ollama</sub>
-    </td>
-    <td width="33%" valign="top">
-      <h3><a href="https://github.com/sumandey7684/Deeptrace">DeepTrace</a></h3>
-      <p>Offline Deep Packet Inspection engine for PCAP analysis and protocol identification.</p>
-      <ul>
-        <li>Directional 5-tuple hash-based load balancing</li>
-        <li>Fast-path packet processing</li>
-        <li>HTTP, HTTPS/TLS, and DNS detection</li>
-        <li>FastAPI backend and React dashboard</li>
-      </ul>
-      <sub><b>C++</b> · FastAPI · React · Vite · Networking</sub>
-    </td>
-    <td width="33%" valign="top">
-      <h3><a href="https://github.com/sumandey7684/MeshPay">MeshPay</a></h3>
-      <p>Offline-first UPI payment simulation focused on secure peer-to-peer transactions.</p>
-      <ul>
-        <li>RSA-OAEP and AES-256-GCM encryption</li>
-        <li>SHA-256-based idempotency</li>
-        <li>Concurrent transactions and bridge synchronization</li>
-        <li>Optimistic locking</li>
-      </ul>
-      <sub><b>Java 17</b> · Spring Boot 3 · H2 · Cryptography</sub>
-    </td>
-  </tr>
-</table>
+### [AstraDB](https://github.com/sumandey7684/AstraDB)
+
+C++17 vector database and RAG engine built for fast semantic retrieval.
+
+- HNSW, KD-Tree, and brute-force similarity search
+- REST API integration and PCA visualization
+- Ollama support for local embeddings and LLMs
+
+<sub><b>C++17</b> · HNSW · KD-Tree · RAG · Ollama</sub>
+
+### [DeepTrace](https://github.com/sumandey7684/Deeptrace)
+
+Offline Deep Packet Inspection engine for PCAP analysis and protocol identification.
+
+- Directional 5-tuple hash-based load balancing
+- Fast-path packet processing
+- HTTP, HTTPS/TLS, and DNS detection
+- FastAPI backend and React dashboard
+
+<sub><b>C++</b> · FastAPI · React · Vite · Networking</sub>
+
+### [MeshPay](https://github.com/sumandey7684/MeshPay)
+
+Offline-first UPI payment simulation focused on secure peer-to-peer transactions.
+
+- RSA-OAEP and AES-256-GCM encryption
+- SHA-256-based idempotency
+- Concurrent transactions and bridge synchronization
+- Optimistic locking
+
+<sub><b>Java 17</b> · Spring Boot 3 · H2 · Cryptography</sub>
 
 <hr>
 
@@ -65,13 +60,18 @@
   <img src="https://ghchart.rshah.org/sumandey7684" alt="GitHub contribution graph for sumandey7684" width="100%">
 </div>
 
+<p align="center"><sub><b>Stats Snapshot</b> · Last updated: 2026-11-17</sub></p>
+
 <div align="center">
-  <img src="./github%20stats.png" alt="Suman Dey's GitHub stats" width="49%">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=sumandey7684&theme=dark&hide_border=true" alt="GitHub streak stats" width="49%">
+  <img src="./github%20stats.png" alt="Suman Dey's GitHub stats" width="100%">
 </div>
 
 <div align="center">
-  <img src="./most%20used%20lang.png" alt="Most used programming languages" width="49%">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=sumandey7684&theme=dark&hide_border=true" alt="GitHub streak stats" width="100%">
+</div>
+
+<div align="center">
+  <img src="./most%20used%20lang.png" alt="Most used programming languages" width="100%">
 </div>
 
 <div align="center">
