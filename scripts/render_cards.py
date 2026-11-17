@@ -203,7 +203,7 @@ def render_activity(data: dict) -> None:
 <g class="animate">
 <text x="716" y="78" fill="{MUTED}" font-family="Geist Mono" font-size="11">TOTAL</text><text x="716" y="113" fill="{TEXT}" font-family="Geist" font-size="30" font-weight="600">{total}</text>
 <text x="716" y="146" fill="{MUTED}" font-family="Geist Mono" font-size="11">ACTIVE DAYS</text><text x="716" y="174" fill="{TEXT}" font-family="Geist" font-size="20" font-weight="600">{data["active_days"]}</text>
-<text x="716" y="204" fill="{MUTED}" font-family="Geist Mono" font-size="11">BEST MONTH</text><text x="716" y="228" fill="{ACCENT}" font-family="Geist" font-size="17" font-weight="600">{esc(monthly[best_index][0] if monthly else "TODO_BEST_MONTH")}</text>
+<text x="716" y="204" fill="{MUTED}" font-family="Geist Mono" font-size="11">BEST MONTH</text><text x="716" y="228" fill="{ACCENT}" font-family="Geist" font-size="17" font-weight="600">{esc(monthly[best_index][0] if monthly else "N/A")}</text>
 </g>"""
     write("activity.svg", card("Monthly activity", body, 260, .8, ("instrument", "geist", "geist-semibold", "mono")))
 
@@ -228,7 +228,7 @@ def render_tile(kind: str, value: str, delay: float) -> None:
 
 
 def render_repo(stats: dict, repo: dict) -> None:
-    description = stats["repo_descriptions"].get(repo["name"], "TODO_REPO_DESCRIPTION_PODCAST_BUDDY")
+    description = stats["repo_descriptions"][repo["name"]]
     body = f"""<g class="animate">
 <text x="44" y="58" fill="{ACCENT}" font-family="Geist Mono" font-size="11" letter-spacing="2">FEATURED REPOSITORY</text>
 <text x="44" y="112" fill="{TEXT}" font-family="Instrument Serif" font-size="46">{esc(repo["name"])}</text>
