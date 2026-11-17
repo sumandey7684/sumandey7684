@@ -1,25 +1,23 @@
-# SUMAN DEY <3
-==================
+```text
+SUMAN DEY <3
 
-Love turning ideas into working products.  
-Building scalable applications, exploring Generative AI, and solving real-world problems through code.
-
+Love turning ideas into working products.
 ---------------
 Connect With Me
 
-» GitHub        → https://github.com/sumandey7684  
-» LinkedIn      → https://www.linkedin.com/in/sumandey7684  
-» X / Twitter   → https://x.com/sumxnnn  
-» Portfolio     → https://www.sumandey.tech  
-» LeetCode      → https://leetcode.com/u/suman_dey/  
+» GitHub        → https://github.com/sumandey7684
+» LinkedIn      → https://www.linkedin.com/in/sumandey7684
+» X / Twitter   → https://x.com/sumxnnn
+» Portfolio     → https://www.sumandey.tech
+» LeetCode      → https://leetcode.com/u/suman_dey/
 » Email         → sumandey7684@gmail.com
 
 --------------
 Skills & Tools
 
-» Languages:    Java, JavaScript, TypeScript, Python, C++, SQL
+» Languages:    Java, JavaScript, TypeScript, Python, Rust, C++, SQL
 » Backend:      Node.js, Express.js, Spring Boot, FastAPI
-» Frontend:     React, Next.js, Tailwind CSS, HTML5, CSS3
+» Frontend:     React, Next.js, Tailwind CSS
 » Databases:    PostgreSQL, MongoDB, MySQL, SQLite, H2
 » AI / ML:      LangChain, LangGraph, Gemini, FAISS, RAG
 » DevOps:       Docker, Git, GitHub, AWS, Postman
@@ -43,13 +41,15 @@ Featured Projects
   ✦ AI-powered news-to-podcast generator that transforms live news into engaging two-host podcast episodes.
   ✦ Tech: Python, Gemini, GNews API, Edge TTS, FFmpeg
 
------------------
+---------------
 Coding Profiles
 
-» LeetCode:     700+ Problems Solved
+» LeetCode: 720+ Problems Solved
+» Global rank: 92,000
 » Contest Rating: 1384
+» Total active days: 300+ days
+» Max streak: 150+ days
 
---------------------------
 Thanks for stopping by! :)
-
 Feel free to connect, share ideas, collaborate, or explore something interesting together.
+```
