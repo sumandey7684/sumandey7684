@@ -1,273 +1,270 @@
 #!/usr/bin/env python3
-"""Render the animated SVG cards used by the profile README."""
+"""Render the animated SVG profile cards."""
 
 from __future__ import annotations
 
 import base64
+import html
 import json
 import os
+import re
 import shutil
-import subprocess
 import tempfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-CARDS = ROOT / "cards"
-DATA_PATH = ROOT / "data" / "contributions.json"
-FONT_PATH = Path(os.environ.get("FONT_PATH", ROOT / "fonts" / "Outfit-Variable.ttf"))
+from fontTools.subset import Options, Subsetter
+from fontTools.ttLib import TTFont
 
-BG = "#09090b"
-CARD = "#121114"
-TEXT = "#f4f1ef"
-MUTED = "#a9a2a0"
-BORDER = "#2b2729"
-ACCENT = "#f4b860"
-GREEN = "#9bbf74"
-MONO = "Geist Mono, monospace"
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "data"
+FONTS = ROOT / "fonts"
+OUT = ROOT / ("cards-preview" if os.environ.get("STATIC") == "1" else "cards")
 STATIC = os.environ.get("STATIC") == "1"
-PORTRAIT = os.environ.get("PORTRAIT_URL", "")
+WIDTH = 880
+BG = "#0b0b0d"
+PANEL = "#121216"
+TEXT = "#f4f1ed"
+MUTED = "#9c9893"
+LINE = "#2b292a"
+ACCENT = "#e3a34f"
+ACCENT_DARK = "#765126"
+GREEN = "#9abf78"
+
+REPOS = [
+    {
+        "name": "Podcast-buddy",
+        "slug": "Podcast-buddy",
+        "language": "Python",
+    }
+]
 
 
 def esc(value: object) -> str:
-    return (
-        str(value)
-        .replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-        .replace("'", "&apos;")
-    )
+    return html.escape(str(value), quote=True)
 
 
-def font_data_uri() -> str:
-    if not FONT_PATH.exists():
-        raise FileNotFoundError(
-            f"Missing {FONT_PATH}. Download Outfit-Variable.ttf or set FONT_PATH."
-        )
-    pyftsubset = shutil.which("pyftsubset")
-    if not pyftsubset:
-        raise RuntimeError("pyftsubset is required. Install fonttools before rendering cards.")
+def load_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def font_sources() -> dict[str, Path]:
+    return {
+        "instrument": FONTS / "InstrumentSerif-Regular.source.woff",
+        "instrument-italic": FONTS / "InstrumentSerif-Italic.source.woff",
+        "geist": FONTS / "Geist-400.source.woff",
+        "geist-semibold": FONTS / "Geist-600.source.woff",
+        "mono": FONTS / "GeistMono-400.source.woff",
+    }
+
+
+def subset_fonts(text: str, families: tuple[str, ...] | None = None) -> dict[str, str]:
+    unicodes = {ord(char) for char in text if ord(char) <= 0xFFFF}
+    result = {}
     with tempfile.TemporaryDirectory() as directory:
-        output = Path(directory) / "outfit.woff"
-        subprocess.run(
-            [
-                pyftsubset,
-                str(FONT_PATH),
-                f"--output-file={output}",
-                "--flavor=woff",
-                "--layout-features=*",
-                "--unicodes=U+0000-00FF,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2197",
-            ],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        encoded = base64.b64encode(output.read_bytes()).decode("ascii")
-    return f"data:font/woff;base64,{encoded}"
+        sources = font_sources()
+        for family in families or tuple(sources):
+            source = sources[family]
+            if not source.exists():
+                raise FileNotFoundError(f"Missing font source: {source}")
+            output = Path(directory) / f"{family}.woff"
+            font = TTFont(source)
+            options = Options()
+            options.flavor = "woff"
+            options.layout_features = ["*"]
+            options.name_IDs = ["*"]
+            subsetter = Subsetter(options=options)
+            subsetter.populate(unicodes=unicodes)
+            subsetter.subset(font)
+            font.flavor = "woff"
+            font.save(output)
+            result[family] = base64.b64encode(output.read_bytes()).decode("ascii")
+    return result
 
 
-def shell(title: str, delay: float = 0.0) -> str:
-    return f"""
-  <style>
-    @font-face {{ font-family: Outfit; src: url('{FONT_URI}') format('woff'); font-weight: 100 900; }}
-    @keyframes rise {{ from {{ opacity: 0; transform: translateY(14px); }} to {{ opacity: 1; transform: translateY(0); }} }}
-    @keyframes draw {{ from {{ stroke-dashoffset: 900; }} to {{ stroke-dashoffset: 0; }} }}
-    @keyframes pulse {{ 0%, 100% {{ opacity: .45; }} 50% {{ opacity: 1; }} }}
-    .rise {{ animation: rise .75s cubic-bezier(.22,1,.36,1) both; animation-delay: {delay:.2f}s; }}
-    .draw {{ stroke-dasharray: 900; animation: draw 1.4s ease-out both; animation-delay: {delay + .25:.2f}s; }}
-    .pulse {{ animation: pulse 2.4s ease-in-out infinite; animation-delay: {delay + .5:.2f}s; }}
-    {"*, *::before, *::after { animation: none !important; }" if STATIC else ""}
-    @media (prefers-reduced-motion: reduce) {{
-      *, *::before, *::after {{ animation: none !important; transition: none !important; }}
-    }}
-  </style>
-  <rect width="100%" height="100%" rx="24" fill="{BG}" />
-  <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="23" fill="{CARD}" stroke="{BORDER}" />
-  <text x="42" y="45" fill="{MUTED}" font-family="{MONO}" font-size="12" letter-spacing="2">{esc(title.upper())}</text>
-"""
+def body_text(body: str, title: str) -> str:
+    visible = re.findall(r">([^<>]+)<", body)
+    return title + "".join(visible)
 
 
-def svg(title: str, width: int, height: int, body: str, delay: float = 0.0) -> str:
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">
-  <title id="title">{esc(title)}</title><desc id="desc">Animated profile card for Suman Dey</desc>
-  {shell(title, delay)}{body}
+def style(fonts: dict[str, str], delay: float) -> str:
+    animation = "" if STATIC else "animation: rise .75s cubic-bezier(.22,1,.36,1) both;"
+    faces = []
+    if "instrument" in fonts:
+        faces.append(f'@font-face{{font-family:Instrument Serif;src:url(data:font/woff;base64,{fonts["instrument"]}) format("woff");}}')
+    if "instrument-italic" in fonts:
+        faces.append(f'@font-face{{font-family:Instrument Serif;src:url(data:font/woff;base64,{fonts["instrument-italic"]}) format("woff");font-style:italic;}}')
+    if "geist" in fonts:
+        faces.append(f'@font-face{{font-family:Geist;src:url(data:font/woff;base64,{fonts["geist"]}) format("woff");font-weight:400;}}')
+    if "geist-semibold" in fonts:
+        faces.append(f'@font-face{{font-family:Geist;src:url(data:font/woff;base64,{fonts["geist-semibold"]}) format("woff");font-weight:600;}}')
+    if "mono" in fonts:
+        faces.append(f'@font-face{{font-family:Geist Mono;src:url(data:font/woff;base64,{fonts["mono"]}) format("woff");}}')
+    return f"""<style>
+{''.join(faces)}
+@keyframes rise{{from{{opacity:0;transform:translateY(12px)}}to{{opacity:1;transform:translateY(0)}}}}
+.animate{{{animation}animation-delay:{delay:.2f}s}}
+@media (prefers-reduced-motion:reduce){{.animate{{animation:none!important}}}}
+</style>"""
+
+
+def card(title: str, body: str, height: int, delay: float = 0, families: tuple[str, ...] | None = None) -> str:
+    fonts = subset_fonts(body_text(body, title), families)
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" role="img" aria-labelledby="card-title card-desc">
+<title id="card-title">{esc(title)}</title>
+<desc id="card-desc">Suman profile card</desc>
+{style(fonts, delay)}
+<rect width="{WIDTH}" height="{height}" rx="20" fill="{BG}"/>
+{body}
 </svg>
 """
 
 
-def load_data() -> dict:
-    if not DATA_PATH.exists():
-        return {"contributionCalendar": {"totalContributions": 0, "weeks": []}}
-    return json.loads(DATA_PATH.read_text(encoding="utf-8"))
+def write(name: str, content: str) -> None:
+    OUT.mkdir(parents=True, exist_ok=True)
+    path = OUT / name
+    path.write_text(content, encoding="utf-8")
+    size = path.stat().st_size
+    print(f"{name}: {size} bytes")
+    if size >= 100_000:
+        raise RuntimeError(f"{name} exceeds 100 KB.")
 
 
-def days_from_data(data: dict) -> list[dict]:
-    days = []
-    for week in data.get("contributionCalendar", {}).get("weeks", []):
-        days.extend(week.get("contributionDays", []))
-    return days
+def render_hero(stats: dict) -> None:
+    body = f"""<g class="animate">
+<text x="44" y="76" fill="{ACCENT}" font-family="Geist Mono" font-size="12" letter-spacing="2">PROFILE / SUMAN</text>
+<text x="44" y="145" fill="{TEXT}" font-family="Instrument Serif" font-size="78">Suman</text>
+<text x="46" y="183" fill="{MUTED}" font-family="Geist" font-size="18">B.Tech CSE student at Trident Academy of Technology (BPUT),</text>
+<text x="46" y="211" fill="{MUTED}" font-family="Geist" font-size="18">class of 2027, building full-stack and AI agent systems</text>
+<text x="46" y="252" fill="{TEXT}" font-family="Geist Mono" font-size="13">Bhubaneswar, India</text>
+<circle cx="794" cy="144" r="66" fill="{ACCENT_DARK}" opacity=".28"/>
+<circle cx="794" cy="144" r="37" fill="{ACCENT}"/>
+<text x="794" y="153" text-anchor="middle" fill="{BG}" font-family="Instrument Serif" font-size="32">S</text>
+</g>"""
+    write("hero.svg", card("Suman profile", body, 290, 0))
 
 
-def contribution_summary(data: dict) -> tuple[list[tuple[str, int]], int, int, str, list[dict]]:
-    days = days_from_data(data)
-    months: dict[str, int] = {}
-    for day in days:
-        month = day["date"][:7]
-        months[month] = months.get(month, 0) + int(day.get("contributionCount", 0))
-    chart = list(months.items())[-12:]
-    active = sum(int(day.get("contributionCount", 0)) > 0 for day in days)
-    streak = 0
-    for day in reversed(days):
-        if int(day.get("contributionCount", 0)) > 0:
-            streak += 1
-        elif streak:
-            break
-    busiest = max(days, key=lambda day: int(day.get("contributionCount", 0)), default={"date": "—", "contributionCount": 0})
-    return chart, streak, active, busiest["date"], days
-
-
-def render_hero() -> str:
-    portrait = (
-        f'<image href="{esc(PORTRAIT)}" x="976" y="88" width="84" height="84" clip-path="url(#portrait)"/>'
-        if PORTRAIT
-        else '<circle class="pulse" cx="1018" cy="130" r="48" fill="#f4b860" opacity=".16"/><circle cx="1018" cy="130" r="31" fill="#f4b860" opacity=".9"/><text x="1018" y="137" text-anchor="middle" fill="#09090b" font-family="Outfit, sans-serif" font-size="22" font-weight="700">SD</text>'
-    )
-    return svg(
-        "Suman Dey",
-        1100,
-        260,
-        f"""
-  <g class="rise">
-    <text x="42" y="124" fill="{TEXT}" font-family="Outfit, sans-serif" font-size="64" font-weight="650" letter-spacing="-2">Suman Dey</text>
-    <text x="45" y="166" fill="{ACCENT}" font-family="Outfit, sans-serif" font-size="20">AIML at MindBrain Innovation · building useful things, one percent better every day.</text>
-    <text x="45" y="211" fill="{MUTED}" font-family="{MONO}" font-size="13">sumandey.in  /  github.com/sumandey7684</text>
-  </g>
-  <defs><clipPath id="portrait"><circle cx="1018" cy="130" r="42"/></clipPath></defs>
-  {portrait}
-""",
-        0.0,
-    )
-
-
-def render_link_tile(label: str, value: str, url: str, delay: float) -> str:
-    return svg(
-        label,
-        340,
-        150,
-        f"""  <a href="{esc(url)}">
-    <g class="rise">
-      <rect x="1" y="1" width="338" height="148" rx="23" fill="{CARD}" stroke="{BORDER}"/>
-      <text x="24" y="45" fill="{ACCENT}" font-family="{MONO}" font-size="11" letter-spacing="1.5">{esc(label)}</text>
-      <text x="24" y="88" fill="{TEXT}" font-family="Outfit, sans-serif" font-size="20" font-weight="550">{esc(value)}</text>
-      <text x="308" y="88" fill="{MUTED}" font-family="{MONO}" font-size="18">↗</text>
-    </g>
-  </a>""",
-        delay,
-    )
-
-
-def render_activity(data: dict) -> str:
-    chart, streak, active, busiest, _ = contribution_summary(data)
-    max_value = max((value for _, value in chart), default=1)
-    bars = []
-    for index, (month, value) in enumerate(chart):
-        x = 55 + index * 60
-        height = max(4, round(value / max_value * 104))
-        bars.append(
-            f"""<rect class="rise" style="animation-delay:{.55 + index * .04:.2f}s" x="{x}" y="{164 - height}" width="30" height="{height}" rx="7" fill="{ACCENT}" opacity="{.42 + (index / max(len(chart), 1)) * .5:.2f}"/>
-  <text x="{x + 15}" y="190" text-anchor="middle" fill="{MUTED}" font-family="{MONO}" font-size="10">{esc(month[5:])}</text>"""
-        )
-    return svg(
-        "Build log",
-        1100,
-        260,
-        f"""
-  <g class="rise">
-    <text x="42" y="84" fill="{TEXT}" font-family="Outfit, sans-serif" font-size="28" font-weight="600">A year in motion</text>
-    <text x="42" y="108" fill="{MUTED}" font-family="Outfit, sans-serif" font-size="14">Small commits, compounding into useful work.</text>
-  </g>
-  <g>{''.join(bars)}</g>
-  <g class="rise" style="animation-delay:.9s">
-    <text x="810" y="105" fill="{MUTED}" font-family="{MONO}" font-size="11">CURRENT STREAK</text>
-    <text x="810" y="136" fill="{TEXT}" font-family="Outfit, sans-serif" font-size="28" font-weight="650">{streak} days</text>
-    <text x="810" y="165" fill="{MUTED}" font-family="{MONO}" font-size="11">ACTIVE DAYS  {active}   ·   PEAK  {esc(busiest)}</text>
-  </g>
-""",
-        0.5,
-    )
-
-
-def render_repo(repo: dict, index: int) -> str:
-    language = repo.get("language", "Code")
-    stars = repo.get("stars", 0)
-    return svg(
-        repo.get("name", "Featured project"),
-        1100,
-        190,
-        f"""
-  <a href="{esc(repo.get('url', '#'))}">
-    <g class="rise" style="animation-delay:{index * .12:.2f}s">
-      <text x="42" y="91" fill="{TEXT}" font-family="Outfit, sans-serif" font-size="29" font-weight="600">{esc(repo.get("name", "Featured project"))}</text>
-      <text x="42" y="124" fill="{MUTED}" font-family="Outfit, sans-serif" font-size="15">{esc(repo.get("description", "A project I am proud to build."))}</text>
-      <text x="42" y="158" fill="{ACCENT}" font-family="{MONO}" font-size="11">{esc(language.upper())}   ·   ★ {stars}</text>
-      <text x="1018" y="113" text-anchor="middle" fill="{ACCENT}" font-family="{MONO}" font-size="21">↗</text>
-    </g>
-  </a>
-""",
-        1.1 + index * .2,
-    )
-
-
-def render_graph(data: dict) -> str:
-    _, _, _, _, days = contribution_summary(data)
+def render_heatmap(data: dict) -> None:
+    days = data["days"]
+    start_offset = 0
+    if days:
+        start_offset = __import__("datetime").date.fromisoformat(days[0]["date"]).weekday()
     cells = []
-    for index, day in enumerate(days[-365:]):
-        col, row = index // 7, index % 7
-        count = int(day.get("contributionCount", 0))
-        color = ["#211e20", "#5a4930", "#98733c", "#d39a4e", ACCENT][min(4, count // 3 + (1 if count else 0))]
-        cells.append(f'<rect x="{44 + col * 15}" y="{76 + row * 15}" width="10" height="10" rx="2" fill="{color}"/>')
-    return svg(
-        "Contribution map",
-        1100,
-        220,
-        f"""
-  <g class="rise">
-    <text x="42" y="45" fill="{MUTED}" font-family="{MONO}" font-size="12" letter-spacing="2">CONTRIBUTION MAP · LAST 365 DAYS</text>
-  </g>
-  <g class="rise" style="animation-delay:1.5s">{''.join(cells)}</g>
-  <text x="44" y="204" fill="{MUTED}" font-family="{MONO}" font-size="11">less</text>
-  <rect x="76" y="196" width="10" height="10" rx="2" fill="#211e20"/><rect x="91" y="196" width="10" height="10" rx="2" fill="#98733c"/><rect x="106" y="196" width="10" height="10" rx="2" fill="{ACCENT}"/>
-  <text x="126" y="204" fill="{MUTED}" font-family="{MONO}" font-size="11">more</text>
-""",
-        1.7,
-    )
+    colors = {"NONE": "#1c1b1d", "FIRST_QUARTILE": "#59442c", "SECOND_QUARTILE": "#906633", "THIRD_QUARTILE": "#bd813c", "FOURTH_QUARTILE": ACCENT}
+    for index in range(53 * 7):
+        day_index = index - start_offset
+        if 0 <= day_index < len(days):
+            day = days[day_index]
+            color = colors.get(day["level"], colors["NONE"])
+        else:
+            color = "#111114"
+        col, row = divmod(index, 7)
+        cells.append(f'<rect class="animate" style="animation-delay:{.25 + col * .01:.2f}s" x="{44 + col * 15}" y="{76 + row * 15}" width="10" height="10" rx="2" fill="{color}"/>')
+    current = data["current_streak"]
+    longest = data["longest_streak"]
+    best = data["best_day"]
+    body = f"""<g class="animate">
+<text x="44" y="45" fill="{MUTED}" font-family="Geist Mono" font-size="12" letter-spacing="2">CONTRIBUTIONS / LAST 365 DAYS</text>
+<text x="44" y="62" fill="{TEXT}" font-family="Geist" font-size="13">{data["total_contributions"]} contributions across {data["active_days"]} active days</text>
+</g>
+<g>{''.join(cells)}</g>
+<g class="animate">
+<text x="44" y="204" fill="{MUTED}" font-family="Geist Mono" font-size="11">LESS</text>
+<rect x="78" y="196" width="10" height="10" rx="2" fill="#1c1b1d"/><rect x="93" y="196" width="10" height="10" rx="2" fill="#906633"/><rect x="108" y="196" width="10" height="10" rx="2" fill="{ACCENT}"/>
+<text x="126" y="204" fill="{MUTED}" font-family="Geist Mono" font-size="11">MORE</text>
+<text x="300" y="204" fill="{MUTED}" font-family="Geist Mono" font-size="11">CURRENT {current["length"]}d</text>
+<text x="410" y="204" fill="{MUTED}" font-family="Geist Mono" font-size="11">LONGEST {longest["length"]}d</text>
+<text x="540" y="204" fill="{MUTED}" font-family="Geist Mono" font-size="11">BEST {esc(best["date"])} / {best["count"]}</text>
+</g>"""
+    write("heatmap.svg", card("Contribution heatmap", body, 250, .4, ("geist", "geist-semibold", "mono")))
+
+
+def render_activity(data: dict) -> None:
+    monthly = list(data["monthly"].items())
+    total = sum(value for _, value in monthly)
+    if total != data["total_contributions"]:
+        raise RuntimeError("Activity bars do not sum to total contributions.")
+    values = [value for _, value in monthly]
+    peak = max(values) if values else 1
+    best_index = values.index(peak) if values else 0
+    bars = []
+    chart_width = 610
+    bar_width = chart_width / max(len(monthly), 1)
+    for index, (month, value) in enumerate(monthly):
+        height = 14 + (value / peak * 105 if peak else 0)
+        x = 44 + index * bar_width
+        color = ACCENT if index == best_index else ACCENT_DARK
+        bars.append(f'<rect class="animate" style="animation-delay:{.7 + index * .04:.2f}s" x="{x + 3:.2f}" y="{228 - height:.2f}" width="{max(8, bar_width - 7):.2f}" height="{height:.2f}" rx="5" fill="{color}"/><text x="{x + bar_width / 2:.2f}" y="250" text-anchor="middle" fill="{MUTED}" font-family="Geist Mono" font-size="10">{esc(month[5:])}</text>')
+    body = f"""<g class="animate">
+<text x="44" y="55" fill="{TEXT}" font-family="Instrument Serif" font-size="42">A year in motion</text>
+<text x="46" y="78" fill="{MUTED}" font-family="Geist" font-size="14">Monthly contribution rhythm.</text>
+<text x="46" y="98" fill="{MUTED}" font-family="Geist" font-size="14">The strongest complete month is highlighted.</text>
+</g>
+<g>{''.join(bars)}</g>
+<g class="animate">
+<text x="716" y="78" fill="{MUTED}" font-family="Geist Mono" font-size="11">TOTAL</text><text x="716" y="113" fill="{TEXT}" font-family="Geist" font-size="30" font-weight="600">{total}</text>
+<text x="716" y="146" fill="{MUTED}" font-family="Geist Mono" font-size="11">ACTIVE DAYS</text><text x="716" y="174" fill="{TEXT}" font-family="Geist" font-size="20" font-weight="600">{data["active_days"]}</text>
+<text x="716" y="204" fill="{MUTED}" font-family="Geist Mono" font-size="11">BEST MONTH</text><text x="716" y="228" fill="{ACCENT}" font-family="Geist" font-size="17" font-weight="600">{esc(monthly[best_index][0] if monthly else "N/A")}</text>
+</g>"""
+    write("activity.svg", card("Monthly activity", body, 260, .8, ("instrument", "geist", "geist-semibold", "mono")))
+
+
+def render_tile(kind: str, value: str, delay: float) -> None:
+    width = 293.333
+    value_size = 42 if len(value) <= 8 else 22
+    body = f"""<g class="animate">
+<rect x="4" y="4" width="285.333" height="152" rx="16" fill="{PANEL}" stroke="{LINE}"/>
+<text x="22" y="44" fill="{ACCENT}" font-family="Geist Mono" font-size="11" letter-spacing="2">{esc(kind)}</text>
+<text x="22" y="103" fill="{TEXT}" font-family="Instrument Serif" font-size="{value_size}">{esc(value)}</text>
+<text x="22" y="133" fill="{MUTED}" font-family="Geist" font-size="12">hand-set profile signal</text>
+</g>"""
+    tile_fonts = subset_fonts(body_text(body, kind), ("instrument", "geist", "mono"))
+    write(f"tile-{kind.lower()}.svg", f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="160" viewBox="0 0 {width} 160" role="img" aria-labelledby="tile-title tile-desc">
+<title id="tile-title">{esc(kind)} profile tile</title><desc id="tile-desc">Profile tile for Suman</desc>
+{style(tile_fonts, delay)}
+<rect width="{width}" height="160" fill="{BG}"/>
+{body}
+</svg>
+""")
+
+
+def render_repo(stats: dict, repo: dict) -> None:
+    description = stats["repo_descriptions"][repo["name"]]
+    body = f"""<g class="animate">
+<text x="44" y="58" fill="{ACCENT}" font-family="Geist Mono" font-size="11" letter-spacing="2">FEATURED REPOSITORY</text>
+<text x="44" y="112" fill="{TEXT}" font-family="Instrument Serif" font-size="46">{esc(repo["name"])}</text>
+<text x="46" y="143" fill="{MUTED}" font-family="Geist" font-size="15">{esc(description)}</text>
+<text x="46" y="176" fill="{ACCENT}" font-family="Geist Mono" font-size="12">{esc(repo["language"])}</text>
+</g>"""
+    write(f'repo-{repo["slug"].lower()}.svg', card(repo["name"], body, 210, 1.8))
+
+
+def render_title(theme: str) -> None:
+    background = "#f4f1ed" if theme == "light" else BG
+    foreground = "#171517" if theme == "light" else TEXT
+    body = f"""<text class="animate" x="44" y="78" fill="{foreground}" font-family="Instrument Serif" font-size="58">What I&apos;m building</text>"""
+    title = f"What I'm building ({theme})"
+    title_fonts = subset_fonts(body_text(body, title), ("instrument",))
+    write(f"title-{theme}.svg", f"""<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="110" viewBox="0 0 {WIDTH} 110" role="img" aria-labelledby="title desc">
+<title id="title">{esc(title)}</title><desc id="desc">Section title</desc>
+{style(title_fonts, 1.5)}
+<rect width="{WIDTH}" height="110" rx="20" fill="{background}"/>
+{body}
+</svg>
+""")
 
 
 def main() -> None:
-    global FONT_URI
-    FONT_URI = font_data_uri()
-    data = load_data()
-    profile = {
-        "featured_repos": [
-            {"name": "AstraDB", "language": "C++", "stars": 2, "url": "https://github.com/sumandey7684/AstraDB", "description": "A custom vector database with ANN indexing and semantic search."},
-            {"name": "Podcast-buddy", "language": "Python", "stars": 1, "url": "https://github.com/sumandey7684/Podcast-buddy", "description": "An AI-powered news-to-podcast platform with natural two-host episodes."},
-            {"name": "PDFly", "language": "TypeScript", "stars": 2, "url": "https://github.com/sumandey7684/PDFly", "description": "A privacy-focused PDF toolkit that runs entirely in your browser."},
-        ]
-    }
-    CARDS.mkdir(exist_ok=True)
-    (CARDS / "hero.svg").write_text(render_hero(), encoding="utf-8")
-    links = [
-        ("WEBSITE", "sumandey.in", "https://sumandey.in"),
-        ("LINKEDIN", "in/sumandey7684", "https://linkedin.com/in/sumandey7684"),
-        ("X / TWITTER", "@sumxnnn", "https://x.com/sumxnnn"),
-    ]
-    for index, link in enumerate(links, 1):
-        (CARDS / f"links-{index}.svg").write_text(render_link_tile(*link, .35 + index * .12), encoding="utf-8")
-    (CARDS / "activity.svg").write_text(render_activity(data), encoding="utf-8")
-    (CARDS / "contributions.svg").write_text(render_graph(data), encoding="utf-8")
-    for index, repo in enumerate(profile["featured_repos"], 1):
-        (CARDS / f"repo-{index}.svg").write_text(render_repo(repo, index), encoding="utf-8")
-    print(f"Rendered {len(list(CARDS.glob('*.svg')))} cards to {CARDS}")
+    data = load_json(DATA / "contributions.json")
+    stats = load_json(DATA / "stats.json")
+    render_hero(stats)
+    render_heatmap(data)
+    render_activity(data)
+    for index, kind in enumerate(("BUILD", "BRAND", "LEARN")):
+        render_tile(kind, stats["tiles"][kind], 1.1 + index * .12)
+    render_title("light")
+    render_title("dark")
+    for repo in REPOS:
+        render_repo(stats, repo)
 
 
 if __name__ == "__main__":
